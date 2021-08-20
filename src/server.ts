@@ -3,6 +3,8 @@ import "express-async-errors";
 
 import express, { NextFunction, Request, Response } from "express";
 
+import "./container";
+
 import { routes } from "./routes";
 
 import { AppError } from "./errors/AppError";

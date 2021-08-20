@@ -1,3 +1,5 @@
+import { injectable, inject } from "tsyringe";
+
 import { AppError } from "../../../../errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
@@ -8,17 +10,21 @@ interface IRequest {
   familyName?: string;
 }
 
+@injectable()
 class UpdateUserService {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository
+  ) {}
 
-  execute({ user_id, email, givenName, familyName }: IRequest) {
-    const user = this.usersRepository.findById(user_id);
+  async execute({ user_id, email, givenName, familyName }: IRequest): Promise<void> {
+    const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
       throw new AppError("User doesn't exists.");
     }
 
-    this.usersRepository.update({ user_id, email, givenName, familyName });
+    await this.usersRepository.update({ user_id, email, givenName, familyName });
   }
 }
 

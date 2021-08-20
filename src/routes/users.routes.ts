@@ -1,36 +1,32 @@
 import { Router } from "express";
 
-import { listUsersController } from "../modules/accounts/services/listUsers";
-import { createUserController } from "../modules/accounts/services/createUser";
-import { updateUserController } from "../modules/accounts/services/updateUser";
-import { deleteUserController } from "../modules/accounts/services/deleteUser";
-import { showUserController } from "../modules/accounts/services/showUser";
+import { ListUsersController } from "../modules/accounts/services/listUsers/ListUsersController";
+import { CreateUserController } from "../modules/accounts/services/createUser/CreateUserController";
+import { UpdateUserController } from "../modules/accounts/services/updateUser/UpdateUserController";
+import { DeleteUserController } from "../modules/accounts/services/deleteUser/DeleteUserController";
+import { ShowUserController } from "../modules/accounts/services/showUser/ShowUserController";
 
 const usersRoutes = Router();
 
+const listUsersController = new ListUsersController();
+const createUserController = new CreateUserController();
+const updateUserController = new UpdateUserController();
+const deleteUserController = new DeleteUserController();
+const showUserController = new ShowUserController();
+
 // Index
-usersRoutes.get("/", (request, response) => {
-  return listUsersController.handle(request, response);
-});
+usersRoutes.get("/", listUsersController.handle);
 
 // Show
-usersRoutes.get("/:user_id", (request, response) => {
-  return showUserController.handle(request, response);
-});
+usersRoutes.get("/:user_id", showUserController.handle);
 
 // Create
-usersRoutes.post("/", (request, response) => {
-  return createUserController.handle(request, response);
-});
+usersRoutes.post("/", createUserController.handle);
 
 // Update
-usersRoutes.put("/:user_id", (request, response) => {
-  return updateUserController.handle(request, response);
-});
+usersRoutes.put("/:user_id", updateUserController.handle);
 
 // Delete
-usersRoutes.delete("/:user_id", (request, response) => {
-  return deleteUserController.handle(request, response);
-});
+usersRoutes.delete("/:user_id", deleteUserController.handle);
 
 export { usersRoutes };

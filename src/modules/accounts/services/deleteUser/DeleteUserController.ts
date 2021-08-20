@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
+import { container } from "tsyringe";
+
 import { DeleteUserService } from "./DeleteUserService";
 
 class DeleteUserController {
-  constructor(private deleteUserService: DeleteUserService) {}
-
-  handle(request: Request, response: Response): Response {
+  async handle(request: Request, response: Response): Promise<Response> {
     const { user_id } = request.params;
 
-    this.deleteUserService.execute(user_id);
+    const deleteUserService = container.resolve(DeleteUserService);
+
+    await deleteUserService.execute(user_id);
 
     return response.status(204).send();
   }

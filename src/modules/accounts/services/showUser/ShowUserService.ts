@@ -1,12 +1,18 @@
+import { injectable, inject } from "tsyringe";
+
 import { AppError } from "../../../../errors/AppError";
-import { User } from "../../entities/User";
+import { User } from "../../typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
+@injectable()
 class ShowUserService {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository
+  ) {}
 
-  execute(user_id: string): User {
-    const user = this.usersRepository.findById(user_id);
+  async execute(user_id: string): Promise<User> {
+    const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
       throw new AppError("User doesn't exists.");

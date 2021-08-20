@@ -1,11 +1,17 @@
-import { User } from "../../entities/User";
+import { injectable, inject } from "tsyringe";
+
+import { User } from "../../typeorm/entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
+@injectable()
 class ListUsersService {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository
+  ) {}
 
-  execute(): User[] {
-    const users = this.usersRepository.list();
+  async execute(): Promise<User[]> {
+    const users = await this.usersRepository.list();
 
     return users;
   }

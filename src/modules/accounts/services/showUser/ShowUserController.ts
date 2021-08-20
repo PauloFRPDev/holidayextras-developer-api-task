@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
+import { container } from "tsyringe";
+
 import { ShowUserService } from "./ShowUserService";
 
 class ShowUserController {
-  constructor(private showUserService: ShowUserService) {}
-
-  handle(request: Request, response: Response): Response {
+  async handle(request: Request, response: Response): Promise<Response> {
     const { user_id } = request.params;
 
-    const user = this.showUserService.execute(user_id);
+    const showUserService = container.resolve(ShowUserService);
+
+    const user = await showUserService.execute(user_id);
 
     return response.json(user);
   }
