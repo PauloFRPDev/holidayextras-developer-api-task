@@ -4,7 +4,7 @@ import { listUsersController } from "../modules/accounts/services/listUsers";
 import { createUserController } from "../modules/accounts/services/createUser";
 import { updateUserController } from "../modules/accounts/services/updateUser";
 import { deleteUserController } from "../modules/accounts/services/deleteUser";
-import { showUserController } from "src/modules/accounts/services/showUser";
+import { showUserController } from "../modules/accounts/services/showUser";
 
 const usersRoutes = Router();
 
