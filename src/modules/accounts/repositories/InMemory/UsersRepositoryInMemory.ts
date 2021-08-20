@@ -1,3 +1,5 @@
+import { AppError } from "../../../../errors/AppError";
+
 import { User } from "../../typeorm/entities/User";
 import { IUsersRepository } from "../IUsersRepository";
 import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
@@ -6,28 +8,47 @@ import { IUpdateUserDTO } from "../../dtos/IUpdateUserDTO";
 class UsersRepositoryInMemory implements IUsersRepository {
   users: User[] = [];
 
-  async create({ email, givenName, familyName }: ICreateUserDTO): Promise<void> {
+  async create({
+    email,
+    givenName,
+    familyName,
+  }: ICreateUserDTO): Promise<User> {
     const user = new User();
 
     Object.assign(user, {
       email,
       givenName,
       familyName,
-      // create: new Date(),
+      created: new Date(),
     });
 
     this.users.push(user);
+
+    return user;
   }
 
   async list(): Promise<User[]> {
     return this.users;
   }
 
-  async update({ user_id, email, givenName, familyName }: IUpdateUserDTO): Promise<void> {
-    const user = this.users.find((user) => user.id === user_id) as User;
+  async update({
+    user_id,
+    email,
+    givenName,
+    familyName,
+  }: IUpdateUserDTO): Promise<User> {
+    const user = await this.findById(user_id);
 
     if (email) {
-      user.email = email as string;
+      const findUser = await this.findByEmail(email);
+
+      const emailAlreadyInUse = findUser && findUser.id !== user_id;
+
+      if (emailAlreadyInUse) {
+        throw new AppError("Email already in use.");
+      }
+
+      user.email = email;
     }
     if (givenName) {
       user.givenName = givenName as string;
@@ -35,6 +56,8 @@ class UsersRepositoryInMemory implements IUsersRepository {
     if (familyName) {
       user.familyName = familyName as string;
     }
+
+    return user;
   }
 
   async delete(user_id: string): Promise<void> {

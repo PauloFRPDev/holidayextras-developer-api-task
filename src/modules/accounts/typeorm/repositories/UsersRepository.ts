@@ -23,7 +23,7 @@ class UsersRepository implements IUsersRepository {
     email,
     givenName,
     familyName,
-  }: ICreateUserDTO): Promise<void> {
+  }: ICreateUserDTO): Promise<User> {
     const user = this.repository.create({
       email,
       givenName,
@@ -31,6 +31,8 @@ class UsersRepository implements IUsersRepository {
     });
 
     await this.repository.save(user);
+
+    return user;
   }
 
   async update({
@@ -38,14 +40,22 @@ class UsersRepository implements IUsersRepository {
     email,
     givenName,
     familyName,
-  }: IUpdateUserDTO): Promise<void> {
-    const user = await this.repository.findOne(user_id);
+  }: IUpdateUserDTO): Promise<User> {
+    const user = await this.findById(user_id);
 
     if (!user) {
       throw new AppError("User doesn't exists.");
     }
 
     if (email) {
+      const findUser = await this.findByEmail(email);
+
+      const emailAlreadyInUse = findUser && findUser.id !== user_id;
+
+      if (emailAlreadyInUse) {
+        throw new AppError("Email already in use.");
+      }
+
       user.email = email;
     }
     if (givenName) {
@@ -56,6 +66,8 @@ class UsersRepository implements IUsersRepository {
     }
 
     await this.repository.save(user);
+
+    return user;
   }
 
   async delete(user_id: string): Promise<void> {
