@@ -7,6 +7,8 @@ interface IUsersRepository {
   create({ email, givenName, familyName }: ICreateUserDTO): void;
   update({ user_id, email, givenName, familyName }: IUpdateUserDTO): void;
   delete(user_id: string): void;
+  findByEmail(email: string): User | undefined;
+  findById(id: string): User | undefined;
 }
 
 export { IUsersRepository };

@@ -56,6 +56,14 @@ class UsersRepository implements IUsersRepository {
       user.id === user_id && this.users.splice(index, 1);
     });
   }
+
+  findByEmail(email: string): User | undefined {
+    return this.users.find((user) => user.email === email);
+  }
+
+  findById(id: string): User | undefined {
+    return this.users.find((user) => user.id === id);
+  }
 }
 
 export { UsersRepository };
