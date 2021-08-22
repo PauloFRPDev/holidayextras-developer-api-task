@@ -14,14 +14,17 @@ export class CreateUsersTable1629424647590 implements MigrationInterface {
             name: "email",
             type: "text",
             isUnique: true,
+            isNullable: false,
           },
           {
             name: "givenName",
             type: "text",
+            isNullable: false,
           },
           {
             name: "familyName",
             type: "text",
+            isNullable: false,
           },
           {
             name: "created",

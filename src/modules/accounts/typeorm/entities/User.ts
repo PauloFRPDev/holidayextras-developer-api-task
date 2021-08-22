@@ -6,13 +6,13 @@ class User {
   @PrimaryColumn()
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column()
+  @Column({ nullable: false })
   givenName: string;
 
-  @Column()
+  @Column({ nullable: false })
   familyName: string;
 
   @CreateDateColumn()

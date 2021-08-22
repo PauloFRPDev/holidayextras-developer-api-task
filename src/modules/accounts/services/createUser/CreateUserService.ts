@@ -20,6 +20,14 @@ class CreateUserService {
   async execute({ email, givenName, familyName }: IRequest): Promise<User> {
     const userAlreadyExists = await this.usersRepository.findByEmail(email);
 
+    if (
+      email.trim() === "" ||
+      givenName.trim() === "" ||
+      familyName.trim() === ""
+    ) {
+      throw new AppError("You must pass a valid value.");
+    }
+
     if (userAlreadyExists) {
       throw new AppError("Email already in use.");
     }
