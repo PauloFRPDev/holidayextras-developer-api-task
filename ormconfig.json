@@ -3,12 +3,8 @@
   "database": "database.sqlite",
   "synchronize": true,
   "logging": false,
-  "entities": [
-    "./src/modules/**/entities/*.ts"
-  ],
-  "migrations": [
-    "./src/database/migrations/*.ts"
-  ],
+  "entities": ["./src/modules/**/entities/*.ts"],
+  "migrations": ["./src/database/migrations/*.ts"],
   "cli": {
     "entitiesDir": "./src/modules/**/entities",
     "migrationsDir": "./src/database/migrations"
