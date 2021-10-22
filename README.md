@@ -63,7 +63,7 @@ $ npm run typeorm migration:run OR yarn typeorm migration:run
 $ npm run dev:server OR yarn dev:server
 ```
 
-You can now access http://localhost:3000 from your browser.
+You can now access the api on http://localhost:3333.
 
 ## 📝 License
 
